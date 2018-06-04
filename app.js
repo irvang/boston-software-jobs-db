@@ -4,6 +4,9 @@ const port = process.env.PORT || 3000;
 
 app.set('view engine', 'ejs');
 
+
+app.use(express.static(__dirname + '/assets'));
+
 app.get('/', (req, res) => {
 	// res.send('This will be the landing page.');
 	res.render('landing');
@@ -17,7 +20,6 @@ app.get('/companies', (req, res) => {
 	// res.send(allCompanies);
 	res.render('companies', {listOfCompanies: allCompanies});
 });
-
 
 app.listen(port, () => {
 	console.log('Server listening on port ' + port + '!');
