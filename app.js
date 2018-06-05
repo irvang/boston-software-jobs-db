@@ -1,11 +1,13 @@
 const express = require('express');
 const app = express();
+const bodyParser = require('body-parser');
+
 const port = process.env.PORT || 3000;
 
 app.set('view engine', 'ejs');
 
 
-app.use(express.static(__dirname + '/assets'));
+app.use('/assets', express.static('public'));
 
 app.get('/', (req, res) => {
 	// res.send('This will be the landing page.');
@@ -18,7 +20,11 @@ app.get('/companies', (req, res) => {
 	{ name: "Akamai Technologies", image: "https://www.akamai.com/us/en/multimedia/images/logo/akamai-logo.png" }];
 
 	// res.send(allCompanies);
-	res.render('companies', {listOfCompanies: allCompanies});
+	res.render('companies', { listOfCompanies: allCompanies });
+});
+
+app.get('/companies/new', (req, res) => {
+	res.render('newCompany');
 });
 
 app.listen(port, () => {
