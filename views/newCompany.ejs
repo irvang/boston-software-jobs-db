@@ -2,10 +2,10 @@
 
 	<h1>Create a new company</h1>
 
-	<form action="/companies">
+	<form action="/companies" method="POST">
 		<input type="text" placeholder='Company name' name="name">
 		<input type="text" placeholder='Logo URL' name="logo">
-		<button>Submit</button>
+		<button type="submit">Submit</button>
 	</form>
 
 <% include ../partials/footer %>

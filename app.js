@@ -27,6 +27,12 @@ app.get('/companies/new', (req, res) => {
 	res.render('newCompany');
 });
 
+app.post('/companies', (req, res) => {
+	console.log('Hit the POST route');
+
+	res.send('You hit the POST route!')
+});
+
 app.listen(port, () => {
 	console.log('Server listening on port ' + port + '!');
 });
