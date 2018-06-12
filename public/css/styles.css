@@ -3,6 +3,12 @@ html, body {
 	font-size: 14px;
 }
 
-/* img {
-	width: 75px;
-} */
+img {
+	width: 200px;
+}
+
+.row {
+	display: flex;
+	flex-wrap: wrap;
+	text-align: center;
+}
