@@ -9,18 +9,20 @@ app.set('view engine', 'ejs');
 
 app.use('/assets', express.static('public'));
 
+app.use(bodyParser.urlencoded({ extended: true }));
+
 app.get('/', (req, res) => {
 	// res.send('This will be the landing page.');
 	res.render('landing');
 });
 
-app.get('/companies', (req, res) => {
-	let allCompanies = [{ name: "SmartBear Software", image: "https://smartbear.com/SmartBear/media/images/smartbear-color-logo-s.png" },
-	{ name: "Wayfair", image: "https://d2xsegqaa8s978.cloudfront.net/wayfair_0.0.4_staging/assets/logo.png" },
-	{ name: "Akamai Technologies", image: "https://www.akamai.com/us/en/multimedia/images/logo/akamai-logo.png" }];
+let globalCompanies = [{ name: "SmartBear Software", image: "https://smartbear.com/SmartBear/media/images/smartbear-color-logo-s.png" },
+{ name: "Wayfair", image: "https://d2xsegqaa8s978.cloudfront.net/wayfair_0.0.4_staging/assets/logo.png" },
+{ name: "Akamai Technologies", image: "https://www.akamai.com/us/en/multimedia/images/logo/akamai-logo.png" }];
 
-	// res.send(allCompanies);
-	res.render('companies', { listOfCompanies: allCompanies });
+app.get('/companies', (req, res) => {
+	// res.send(globalCompanies);
+	res.render('companies', { listOfCompanies: globalCompanies });
 });
 
 app.get('/companies/new', (req, res) => {
@@ -28,8 +30,7 @@ app.get('/companies/new', (req, res) => {
 });
 
 app.post('/companies', (req, res) => {
-	console.log('Hit the POST route');
-
+	globalCompanies.push({ name: req.body.name, image: req.body.logo });
 	res.send('You hit the POST route!')
 });
 
