@@ -1,0 +1,14 @@
+html, body {
+	/* background-color: aqua; */
+	font-size: 14px;
+}
+
+img {
+	width: 200px;
+}
+
+.row {
+	display: flex;
+	flex-wrap: wrap;
+	text-align: center;
+}
