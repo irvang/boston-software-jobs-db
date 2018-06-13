@@ -1,5 +1,9 @@
 <% include ../partials/header %>
 
+<nav class="navabar navbar-default">
+
+</nav>
+
 	<div class="container">
 
 		<header class="jumbotron">
@@ -11,7 +15,6 @@
 
 				<a href="/companies/new" class="btn btn-primary btn-large">Add new company</a>
 			</div>
-
 		</header>
 
 		<div class="row">
@@ -19,12 +22,14 @@
 				<div class="col-md-3 col-sm-6">
 					<div class="thumbnail">
 						<img src=<%=elm.image %> />
+
+						<div class="caption">
+							<!-- <h4> -->
+								<%= elm.name %>
+							<!-- </h4> -->
+						</div>
 					</div>
-					<div class="caption">
-						<h4>
-							<%= elm.name %>
-						</h4>
-					</div>
+
 				</div>
 				<% }); %>
 		</div>
