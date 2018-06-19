@@ -25,9 +25,7 @@ app.get('/', (req, res) => {
 	// res.send('This will be the landing page.');
 	res.render('landing');
 });
-
-
-
+ 
 app.get('/companies', (req, res) => {
 	// res.send(globalCompanies);
 	res.render('companies', { listOfCompanies: globalCompanies });
