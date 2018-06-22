@@ -2,35 +2,38 @@
 
 <% include ../partials/navbar %>
 
-	<div class="container">
+<div class="container">
 
-		<header class="jumbotron">
-			<!-- Container here as well? -->
-			<div class='container'>
-				<h1>Boston Software Employers</h1>
-				<p>Following are the top 100 software employers in the Boston area.</p>
+	<header class="jumbotron">
+		<!-- Container here as well? -->
+		<div class='container'>
+			<h1>Boston Software Employers</h1>
+			<p>Following are the top 100 software employers in the Boston area.</p>
 
-				<a href="/companies/new" class="btn btn-primary btn-large">Add new company</a>
-			</div>
-		</header>
-
-		<div class="row">
-			<% listOfCompanies.forEach((elm) => {   %>
-				<div class="col-md-3 col-sm-6">
-					<div class="thumbnail">
-						<img src=<%=elm.image %> />
-
-						<div class="caption">
-							<!-- <h4> -->
-							<%= elm.name %>
-								<!-- </h4> -->
-						</div>
-					</div>
-
-				</div>
-				<% }); %>
+			<a href="/companies/new" class="btn btn-primary btn-large">Add new company</a>
 		</div>
+	</header>
+
+	<div class="row">
+		<% listOfCompanies.forEach((elm) => {   %>
+			<div class="col-md-3 col-sm-6">
+				<div class="thumbnail">
+					<img src=<%=elm.image %> />
+
+					<div class="caption">
+						<!-- <h4> -->
+						<%= elm.name %>
+							<!-- </h4> -->
+					</div>
+					<p>
+						<a href="/companies/<%= elm._id %>" class="btn btn-primary">More info</a>
+					</p>
+				</div>
+
+			</div>
+			<% }); %>
 	</div>
+</div>
 
 
-	<% include ../partials/footer %>
+<% include ../partials/footer %>

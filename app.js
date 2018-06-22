@@ -7,22 +7,14 @@ const port = process.env.PORT || 3000;
 
 mongoose.connect('mongodb://localhost/boston-companies');
 
-const companySchema = mongoose.Schema({ name: String, image: String });
+const companySchema = mongoose.Schema({ name: String, image: String, description: String });
 const Company = mongoose.model('Company', companySchema);
 
-let globalCompanies = [{ name: "SmartBear Software", image: "https://smartbear.com/SmartBear/media/images/smartbear-color-logo-s.png" },
-{ name: "Wayfair", image: "https://d2xsegqaa8s978.cloudfront.net/wayfair_0.0.4_staging/assets/logo.png" },
-,
-{ name: "SmartBear Software", image: "https://smartbear.com/SmartBear/media/images/smartbear-color-logo-s.png" },
-{ name: "Wayfair", image: "https://d2xsegqaa8s978.cloudfront.net/wayfair_0.0.4_staging/assets/logo.png" },
-{ name: "Akamai Technologies", image: "https://www.akamai.com/us/en/multimedia/images/logo/akamai-logo.png" },
-{ name: "SmartBear Software", image: "https://smartbear.com/SmartBear/media/images/smartbear-color-logo-s.png" },
-{ name: "Wayfair", image: "https://d2xsegqaa8s978.cloudfront.net/wayfair_0.0.4_staging/assets/logo.png" },
-{ name: "Akamai Technologies", image: "https://www.akamai.com/us/en/multimedia/images/logo/akamai-logo.png" }];
+let defaultDesription = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi, ipsum perferendis facilis pariatur odio, accusantium mollitia molestias ducimus magnam voluptatem iure quasi quidem quas voluptatum provident. Consectetur, reprehenderit! Quidem, accusantium.";
 
-const twoCompanies = [{ name: "SmartBear Software", image: "https://smartbear.com/SmartBear/media/images/smartbear-color-logo-s.png" },
-{ name: "Wayfair", image: "https://d2xsegqaa8s978.cloudfront.net/wayfair_0.0.4_staging/assets/logo.png" },
-{ name: "Akamai Technologies", image: "https://www.akamai.com/us/en/multimedia/images/logo/akamai-logo.png" }];
+const twoCompanies = [{ name: "SmartBear Software", image: "https://smartbear.com/SmartBear/media/images/smartbear-color-logo-s.png", description: defaultDesription },
+{ name: "Wayfair", image: "https://d2xsegqaa8s978.cloudfront.net/wayfair_0.0.4_staging/assets/logo.png", description: defaultDesription },
+{ name: "Akamai Technologies", image: "https://www.akamai.com/us/en/multimedia/images/logo/akamai-logo.png", description: defaultDesription }];
 /* 
 Company.create(twoCompanies, function (err, companies) {
 	if(err) return console.error(err);
@@ -48,16 +40,31 @@ app.get('/companies', (req, res) => {
 	});
 });
 
+
 app.get('/companies/new', (req, res) => {
 	res.render('newCompany');
 });
+
+//SHOW
+app.get('/companies/:id', (req, res) => {
+	// find the campground with the provided ID
+	// render a page for that company.
+
+	Company.findById(req.params.id, function (err, foundCompany) {
+		if (err) return console.error(err);
+		res.render('show', { company: foundCompany });
+	})
+
+});
+
 
 app.post('/companies', (req, res) => {
 	// globalCompanies.push({ name: req.body.name, image: req.body.logo });
 
 	Company.create({
 		name: req.body.name,
-		image: req.body.logo
+		image: req.body.logo, 
+		description: req.body.description
 	}, addCompany);
 
 
