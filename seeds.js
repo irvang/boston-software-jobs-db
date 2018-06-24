@@ -2,6 +2,49 @@
 const Company = require('./models/company');
 const Comment = require('./models/comment');
 
+//SeedING data at the bottom
+function seedDB() {
+	const removeCompaniesPromise = Company.remove({}).exec();
+
+	const removeCommentsPromise = removeCompaniesPromise.then(companies => {
+
+		return Comment.remove({}).exec();
+	});
+
+	removeCommentsPromise.then(comments => {
+
+		return creationPromises();
+	}).catch(function (err) {
+		console.log("----ERROR in seedDB: ", err);
+	});
+}
+
+function creationPromises() {
+
+	const companyCreation = Company.create(companiesArray);
+
+	companyCreation.then(createdCompanies => {
+
+		console.log('\n----Companies\' names: ' + createdCompanies.map(company => company.name));
+
+		createdCompanies.forEach(company => {
+			Comment.create(commentsArray).then(newComments => {
+				newComments.forEach(newComment => {
+					newComment.company = company._id;
+					newComment.save()
+				});
+			});
+		})
+
+	}).catch(function (err) {
+		console.log("----ERROR in creationPromises: ", err);
+	});
+}
+
+
+module.exports = seedDB;
+
+//====SEED DATA
 const companiesArray = [
 	{
 		name: "SmartBear Software",
@@ -31,97 +74,12 @@ const commentsArray = [
 	{
 		text: 'The air conditioner is too cold.',
 		author: 'Ragnar Lothbrok'
+	},
+	{
+		text: 'The air conditioner is hot, and the coffee is hot as well.',
+		author: 'Benjamin'
 	}
 ];
-
-
-function seedDB() {
-	const removeCompaniesPromise = Company.remove({}).exec();
-
-	const removeCommentsPromise = removeCompaniesPromise.then(companies => {
-		// console.log('\n----COMPANIES deleted', companies);
-
-		return Comment.remove({}).exec();
-	});
-
-	removeCommentsPromise.then(comments => {
-		// console.log('\n----COMMENTS deleted: ' + comments);
-
-		return creationPromises();
-	}).catch(function (err) {
-		console.log("----ERROR in seedDB: ", err);
-	});
-}
-
-function creationPromises() {
-	// console.log('\n----CREATION promises');
-	const companyCreation = Company.create(companiesArray);
-
-	const commentsCreation = companyCreation.then(createdCompanies => {
-		console.log('\n----Companies\' names: ' + createdCompanies.map(company => company.name));
-		createdCompanies.forEach(company => {
-			Comment.create(commentsArray).then(newComments => {
-				newComments.forEach(newComment => {
-					newComment.company = company._id;
-					newComment.save()
-				});
-			});
-		})
-		// return Comment.create(commentsArray);
-	})
-
-	commentsCreation.then(createdComments => {
-		console.log('\n----Comment\'s authors: ' );
-
-		// seedDBPromises();
-
-	}).catch(function (err) {
-		console.log("----ERROR in creationPromises: ", err);
-	});
-}
-
-function seedDBPromises() {
-
-	// console.log('\n----Ready to seed');
-
-	const foundComments = Comment.find({}).exec();
-
-	foundComments.then(comments => {
-		Company.find({}).exec().then(companies => {
-
-			companies.forEach(company => {
-
-			})
-		})
-	})
-
-
-
-	const foundCompanies = Company.find({}).exec();
-
-	foundCompanies.then(companies => {
-		// console.log('\n----COMPANIES found: ', companies.map(c => c.name));
-
-		Comment.find({}).exec().then(comments => {
-			// console.log('\n--COMMENTS found: ', comments.map(c => c.author));
-
-			companies.forEach(company => {
-
-				comments.forEach(comment => {
-					company.comments.push(comment._id);
-				});
-				company.save();
-			})
-		})
-
-	}).catch(function (err) {
-		// console.log("----ERROR in seedDB: ", err);
-
-	})
-}
-
-module.exports = seedDB;
-
 
 /* 
 

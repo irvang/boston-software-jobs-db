@@ -41,11 +41,11 @@ app.get('/companies/new', (req, res) => {
 app.get('/companies/:id', (req, res) => {
 	// find the campground with the provided ID
 	// render a page for that company.
+
 	Company.findById(req.params.id).then(foundCompany => {
-		console.log("company name: ", foundCompany.name);
 
 		Comment.find({ company: req.params.id }).then(foundComments => {
-			console.log('COMMENTS:', foundComments)
+
 			return res.render('show', { company: foundCompany, comments: foundComments });
 
 		}).catch(function (err) {
@@ -56,18 +56,7 @@ app.get('/companies/:id', (req, res) => {
 		console.log("----ERROR in company ", err);
 	});
 
-	// Company.findById(req.params.id, function (err, foundCompany) {
-	// 	if (err) return console.error(err);
-
-	// 	Comment.find({ company: req.params.id }).then(comments => {
-	// 		console.log(comments)
-	// 	})
-
-	// 	res.render('show', { company: foundCompany });
-	// })
-
 });
-
 
 app.post('/companies', (req, res) => {
 	// globalCompanies.push({ name: req.body.name, image: req.body.logo });
