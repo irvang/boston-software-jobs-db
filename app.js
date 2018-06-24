@@ -11,7 +11,7 @@ const port = process.env.PORT || 3000;
 // mongoose.connect('mongodb://localhost/boston-companies');
 mongoose.connect('mongodb://goku:abcd1234@ds149335.mlab.com:49335/boston-software-jobs')
 
-seedDB();
+// seedDB().then(message => { console.log(message) });
 
 
 app.set('view engine', 'ejs');
@@ -25,6 +25,16 @@ app.get('/', (req, res) => {
 	// res.send('This will be the landing page.');
 	res.render('landing');
 });
+
+app.get('/api/seed', (req, res) => {
+
+	//waits for seeding before redirection
+	//seedDB() returns a promise
+	seedDB().then(message => {
+		console.log(message);
+		res.redirect('/companies')
+	})
+})
 
 app.get('/companies', (req, res) => {
 	Company.find(function (err, companies) {

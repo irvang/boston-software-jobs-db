@@ -11,19 +11,12 @@ function seedDB() {
 		return Comment.remove({}).exec();
 	});
 
-	removeCommentsPromise.then(comments => {
+	const companyCreation = removeCommentsPromise.then(comments => {
 
-		return creationPromises();
-	}).catch(function (err) {
-		console.log("----ERROR in seedDB: ", err);
+		return Company.create(companiesArray);
 	});
-}
 
-function creationPromises() {
-
-	const companyCreation = Company.create(companiesArray);
-
-	companyCreation.then(createdCompanies => {
+	const finalReturn = companyCreation.then(createdCompanies => {
 
 		createdCompanies.forEach(company => {
 			Comment.create(commentsArray).then(newComments => {
@@ -34,11 +27,13 @@ function creationPromises() {
 			});
 		})
 
+		return 'Companies seeded';
 	}).catch(function (err) {
 		console.log("----ERROR in creationPromises: ", err);
 	});
-}
 
+	return finalReturn;
+}
 
 module.exports = seedDB;
 
@@ -64,6 +59,32 @@ const companiesArray = [
 ];
 
 const commentsArray = [
+	{
+		text: 'This place is great, but I wish they had better coffee.',
+		author: 'George Washington'
+
+	},
+	{
+		text: 'The air conditioner is too cold.',
+		author: 'Ragnar Lothbrok'
+	},
+	{
+		text: 'The air conditioner is hot, and the coffee is hot as well.',
+		author: 'Benjamin'
+	},
+	{
+		text: 'This place is great, but I wish they had better coffee.',
+		author: 'George Washington'
+
+	},
+	{
+		text: 'The air conditioner is too cold.',
+		author: 'Ragnar Lothbrok'
+	},
+	{
+		text: 'The air conditioner is hot, and the coffee is hot as well.',
+		author: 'Benjamin'
+	},
 	{
 		text: 'This place is great, but I wish they had better coffee.',
 		author: 'George Washington'
