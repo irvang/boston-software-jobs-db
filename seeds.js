@@ -38,13 +38,13 @@ function seedDB() {
 	const removeCompaniesPromise = Company.remove({}).exec();
 
 	const commentsPromise = removeCompaniesPromise.then(companies => {
-		console.log('\n----COMPANIES deleted', companies);
+		// console.log('\n----COMPANIES deleted', companies);
 
 		return Comment.remove({}).exec();
 	});
 
 	commentsPromise.then(comments => {
-		console.log('\n----COMMENTS deleted: ' + comments);
+		// console.log('\n----COMMENTS deleted: ' + comments);
 
 		return creationPromises();
 	}).catch(function (err) {
@@ -53,17 +53,17 @@ function seedDB() {
 }
 
 function creationPromises() {
-	console.log('\n----CREATION promises');
+	// console.log('\n----CREATION promises');
 	const companyCreation = Company.create(companiesArray);
 
 	const commentsCreation = companyCreation.then(createdCompanies => {
-		console.log('\n----Companies\' names: ' + createdCompanies.map(company => company.name));
+		// console.log('\n----Companies\' names: ' + createdCompanies.map(company => company.name));
 
 		return Comment.create(commentsArray);
 	})
 
 	commentsCreation.then(createdComments => {
-		console.log('\n----Comment\'s authors: ' + createdComments.map(c => c.author));
+		// console.log('\n----Comment\'s authors: ' + createdComments.map(c => c.author));
 		seedDBPromises();
 
 	}).catch(function (err) {
@@ -73,14 +73,14 @@ function creationPromises() {
 
 function seedDBPromises() {
 
-	console.log('\n----Ready to seed');
+	// console.log('\n----Ready to seed');
 
 	const foundCompanies = Company.find({}).exec();
 	foundCompanies.then(companies => {
-		console.log('\n----COMPANIES found: ', companies.map(c => c.name));
+		// console.log('\n----COMPANIES found: ', companies.map(c => c.name));
 
 		Comment.find({}).exec().then(comments => {
-			console.log('\n--COMMENTS found: ', comments.map(c => c.author));
+			// console.log('\n--COMMENTS found: ', comments.map(c => c.author));
 
 			companies.forEach(company => {
 
@@ -92,7 +92,7 @@ function seedDBPromises() {
 		})
 
 	}).catch(function (err) {
-		console.log("----ERROR in seedDB: ", err);
+		// console.log("----ERROR in seedDB: ", err);
 
 	})
 }
