@@ -24,11 +24,12 @@ const companiesArray = [
 
 const commentsArray = [
 	{
-		text: 'This place is great, but I wish they had better coffee',
+		text: 'This place is great, but I wish they had better coffee.',
 		author: 'George Washington'
+
 	},
 	{
-		text: 'The air conditioner is too cold',
+		text: 'The air conditioner is too cold.',
 		author: 'Ragnar Lothbrok'
 	}
 ];
@@ -37,13 +38,13 @@ const commentsArray = [
 function seedDB() {
 	const removeCompaniesPromise = Company.remove({}).exec();
 
-	const commentsPromise = removeCompaniesPromise.then(companies => {
+	const removeCommentsPromise = removeCompaniesPromise.then(companies => {
 		// console.log('\n----COMPANIES deleted', companies);
 
 		return Comment.remove({}).exec();
 	});
 
-	commentsPromise.then(comments => {
+	removeCommentsPromise.then(comments => {
 		// console.log('\n----COMMENTS deleted: ' + comments);
 
 		return creationPromises();
@@ -57,14 +58,22 @@ function creationPromises() {
 	const companyCreation = Company.create(companiesArray);
 
 	const commentsCreation = companyCreation.then(createdCompanies => {
-		// console.log('\n----Companies\' names: ' + createdCompanies.map(company => company.name));
-
-		return Comment.create(commentsArray);
+		console.log('\n----Companies\' names: ' + createdCompanies.map(company => company.name));
+		createdCompanies.forEach(company => {
+			Comment.create(commentsArray).then(newComments => {
+				newComments.forEach(newComment => {
+					newComment.company = company._id;
+					newComment.save()
+				});
+			});
+		})
+		// return Comment.create(commentsArray);
 	})
 
 	commentsCreation.then(createdComments => {
-		// console.log('\n----Comment\'s authors: ' + createdComments.map(c => c.author));
-		seedDBPromises();
+		console.log('\n----Comment\'s authors: ' );
+
+		// seedDBPromises();
 
 	}).catch(function (err) {
 		console.log("----ERROR in creationPromises: ", err);
@@ -75,7 +84,21 @@ function seedDBPromises() {
 
 	// console.log('\n----Ready to seed');
 
+	const foundComments = Comment.find({}).exec();
+
+	foundComments.then(comments => {
+		Company.find({}).exec().then(companies => {
+
+			companies.forEach(company => {
+
+			})
+		})
+	})
+
+
+
 	const foundCompanies = Company.find({}).exec();
+
 	foundCompanies.then(companies => {
 		// console.log('\n----COMPANIES found: ', companies.map(c => c.name));
 
@@ -99,3 +122,14 @@ function seedDBPromises() {
 
 module.exports = seedDB;
 
+
+/* 
+
+http://mongoosejs.com/docs/populate.html
+
+Refs to children
+We may find however, if we use the author object, we are unable to get a list of the stories. This is because no story objects were ever 'pushed' onto author.stories.
+
+There are two perspectives here. First, you may want the author know which stories are theirs. Usually, your schema should resolve one-to-many relationships by having a parent pointer in the 'many' side. But, if you have a good reason to want an array of child pointers, you can push() documents onto the array as shown below.
+
+*/

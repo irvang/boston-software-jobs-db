@@ -3,24 +3,15 @@ const app = express();
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const Company = require('./models/company');
+const Comment = require('./models/comment');
 const seedDB = require('./seeds');
- 
+
 const port = process.env.PORT || 3000;
 
 mongoose.connect('mongodb://localhost/boston-companies');
 
 seedDB();
 
-let defaultDesription = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi, ipsum perferendis facilis pariatur odio, accusantium mollitia molestias ducimus magnam voluptatem iure quasi quidem quas voluptatum provident. Consectetur, reprehenderit! Quidem, accusantium.";
-
-const twoCompanies = [{ name: "SmartBear Software", image: "https://smartbear.com/SmartBear/media/images/smartbear-color-logo-s.png", description: defaultDesription },
-{ name: "Wayfair", image: "https://d2xsegqaa8s978.cloudfront.net/wayfair_0.0.4_staging/assets/logo.png", description: defaultDesription },
-{ name: "Akamai Technologies", image: "https://www.akamai.com/us/en/multimedia/images/logo/akamai-logo.png", description: defaultDesription }];
-
-// Company.create(twoCompanies, function (err, companies) {
-// 	if(err) return console.error(err);
-// 	console.log( 'added:',companies.map(company => company.name));
-// });
 
 app.set('view engine', 'ejs');
 
@@ -50,15 +41,30 @@ app.get('/companies/new', (req, res) => {
 app.get('/companies/:id', (req, res) => {
 	// find the campground with the provided ID
 	// render a page for that company.
+	Company.findById(req.params.id).then(foundCompany => {
+		console.log("company name: ", foundCompany.name);
 
-	Company.findById(req.params.id, function (err, foundCompany) {
-		if (err) return console.error(err);
-		// let comments = Company.find({comments: mongoose.Types.ObjectId()})
+		Comment.find({ company: req.params.id }).then(foundComments => {
+			console.log('COMMENTS:', foundComments)
+			return res.render('show', { company: foundCompany, comments: foundComments });
 
-		// console.log(comments);
+		}).catch(function (err) {
+			console.log("----ERROR in comment: ", err);
+		});
 
-		res.render('show', { company: foundCompany });
-	})
+	}).catch(function (err) {
+		console.log("----ERROR in company ", err);
+	});
+
+	// Company.findById(req.params.id, function (err, foundCompany) {
+	// 	if (err) return console.error(err);
+
+	// 	Comment.find({ company: req.params.id }).then(comments => {
+	// 		console.log(comments)
+	// 	})
+
+	// 	res.render('show', { company: foundCompany });
+	// })
 
 });
 
@@ -68,7 +74,7 @@ app.post('/companies', (req, res) => {
 
 	Company.create({
 		name: req.body.name,
-		image: req.body.logo, 
+		image: req.body.logo,
 		description: req.body.description
 	}, addCompany);
 

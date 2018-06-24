@@ -8,8 +8,10 @@
 
 <p><%= company.description %></p>
 
-<% company.comments.forEach((comment, i) => { %>
-	<p>Comment <%= i %><%= comment %></p>
+<% comments.forEach((comment, i) => { %>
+
+	<p> <strong> <%= comment.author %> </strong> :"<%= comment.text %> "</p> 
+	<br/>
 <% }) %> 
 
 <!--
