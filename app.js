@@ -8,7 +8,8 @@ const seedDB = require('./seeds');
 
 const port = process.env.PORT || 3000;
 
-mongoose.connect('mongodb://localhost/boston-companies');
+// mongoose.connect('mongodb://localhost/boston-companies');
+mongoose.connect('mongodb://goku:abcd1234@ds149335.mlab.com:49335/boston-software-jobs')
 
 seedDB();
 
