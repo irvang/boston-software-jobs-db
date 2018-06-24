@@ -25,8 +25,6 @@ function creationPromises() {
 
 	companyCreation.then(createdCompanies => {
 
-		console.log('\n----Companies\' names: ' + createdCompanies.map(company => company.name));
-
 		createdCompanies.forEach(company => {
 			Comment.create(commentsArray).then(newComments => {
 				newComments.forEach(newComment => {
