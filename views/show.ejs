@@ -9,12 +9,12 @@
 <p><%= company.description %></p>
 
 <% company.comments.forEach((comment, i) => { %>
-	<p>Comment <%= i %><%= comment.text %></p>
+	<p>Comment <%= i %><%= comment %></p>
 <% }) %> 
 
-
+<!--
 <% for (let i= 0; i < company.comments; i++) { %>
-	<p>Comment <%= i %><%= company.comments[i] %></p>
+	<p>Comment <%= i %><%= company.comments[i].author %></p>
 <% }; %> 
-
+-->
 <% include ../partials/footer %>

@@ -53,6 +53,10 @@ app.get('/companies/:id', (req, res) => {
 
 	Company.findById(req.params.id, function (err, foundCompany) {
 		if (err) return console.error(err);
+		// let comments = Company.find({comments: mongoose.Types.ObjectId()})
+
+		// console.log(comments);
+
 		res.render('show', { company: foundCompany });
 	})
 
