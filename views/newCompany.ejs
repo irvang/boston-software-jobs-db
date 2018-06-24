@@ -1,19 +1,19 @@
 <% include ../partials/header %>
 
-	<% include ../partials/navbar %>
-	<h1>Create a new company</h1>
-	
-	<div class="newCompanyForm">
-			
-			<form action="/companies" method="post">
-				<div class="row">
-					<input class="form-control" type="text" placeholder='Company name' name="name" />
-					<input class="form-control" type="text" placeholder='Logo URL' name="logo" />
-					<input class="form-control" type="text" placeholder='Logo URL' name="logo" />
-					<button class="btn btn-lg btn-default" type="submit">Submit</button>
-				</div>
-			</form>
+<% include ../partials/navbar %>
+<h1>Create a new company</h1>
+
+<div class="newCompanyForm">
+		
+	<form action="/companies" method="post">
+		<div class="row">
+			<input class="form-control" type="text" placeholder='Company name' name="name" />
+			<input class="form-control" type="text" placeholder='Logo URL' name="logo" />
+			<input class="form-control" type="text" placeholder='Logo URL' name="logo" />
+			<button class="btn btn-lg btn-default" type="submit">Submit</button>
 		</div>
+	</form>
+</div>
 
 
-		<% include ../partials/footer %>
+<% include ../partials/footer %>

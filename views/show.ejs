@@ -8,4 +8,13 @@
 
 <p><%= company.description %></p>
 
+<% company.comments.forEach((comment, i) => { %>
+	<p>Comment <%= i %><%= comment.text %></p>
+<% }) %> 
+
+
+<% for (let i= 0; i < company.comments; i++) { %>
+	<p>Comment <%= i %><%= company.comments[i] %></p>
+<% }; %> 
+
 <% include ../partials/footer %>
