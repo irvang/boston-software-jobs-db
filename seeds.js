@@ -32,7 +32,7 @@ module.exports = function seedDB() {
 		});
 }
 
-module.exports = seedDB;
+// module.exports = seedDB;
 
 
 //====SEED DATA
