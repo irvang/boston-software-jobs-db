@@ -13,7 +13,7 @@ mongoose.connect('mongodb://goku:abcd1234@ds149335.mlab.com:49335/boston-softwar
 
 // seedDB().then(message => { console.log(message) });
 
-
+//----------------------
 app.set('view engine', 'ejs');
 
 
@@ -26,6 +26,7 @@ app.get('/', (req, res) => {
 	res.render('landing');
 });
 
+//----------------------
 app.get('/api/seed', (req, res) => {
 
 	//waits for seeding before redirection
@@ -36,6 +37,7 @@ app.get('/api/seed', (req, res) => {
 	})
 })
 
+//----------------------
 app.get('/companies', (req, res) => {
 	Company.find(function (err, companies) {
 		if (err) return console.error(err);
@@ -43,12 +45,12 @@ app.get('/companies', (req, res) => {
 	});
 });
 
-
+//----------------------
 app.get('/companies/new', (req, res) => {
 	res.render('newCompany');
 });
 
-//SHOW
+//====SHOW
 app.get('/companies/:id', (req, res) => {
 	// find the campground with the provided ID
 	// render a page for that company.
@@ -69,6 +71,7 @@ app.get('/companies/:id', (req, res) => {
 
 });
 
+//----------------------
 app.post('/companies', (req, res) => {
 	// globalCompanies.push({ name: req.body.name, image: req.body.logo });
 
@@ -86,6 +89,7 @@ app.post('/companies', (req, res) => {
 	}
 });
 
+//----------------------
 app.listen(port, () => {
 	console.log('Server listening on port ' + port + '!');
 });

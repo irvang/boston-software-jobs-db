@@ -2,40 +2,38 @@
 const Company = require('./models/company');
 const Comment = require('./models/comment');
 
-//SeedING data at the bottom
-function seedDB() {
-	const removeCompaniesPromise = Company.remove({}).exec();
+/* -Seeding data at the bottom
+-Using chain of promises to ensure completion of a function before next 
+function starts */
+module.exports = function seedDB() {
 
-	const removeCommentsPromise = removeCompaniesPromise.then(companies => {
+	return Company.remove({}).exec()
+		.then((companies) => {
 
-		return Comment.remove({}).exec();
-	});
+			return Comment.remove({}).exec();
+		}).then((comments) => {
 
-	const companyCreation = removeCommentsPromise.then(comments => {
+			return Company.create(companiesArray);
+		}).then(createdCompanies => {
 
-		return Company.create(companiesArray);
-	});
-
-	const finalReturn = companyCreation.then(createdCompanies => {
-
-		createdCompanies.forEach(company => {
-			Comment.create(commentsArray).then(newComments => {
-				newComments.forEach(newComment => {
-					newComment.company = company._id;
-					newComment.save()
+			createdCompanies.forEach(company => {
+				Comment.create(commentsArray).then(newComments => {
+					newComments.forEach(newComment => {
+						newComment.company = company._id;
+						newComment.save()
+					});
 				});
 			});
-		})
 
-		return 'Companies seeded';
-	}).catch(function (err) {
-		console.log("----ERROR in creationPromises: ", err);
-	});
+			return 'Companies seeded';
 
-	return finalReturn;
+		}).catch(function (err) {
+			console.log("----ERROR in creationPromises: ", err);
+		});
 }
 
 module.exports = seedDB;
+
 
 //====SEED DATA
 const companiesArray = [
@@ -109,4 +107,66 @@ We may find however, if we use the author object, we are unable to get a list of
 
 There are two perspectives here. First, you may want the author know which stories are theirs. Usually, your schema should resolve one-to-many relationships by having a parent pointer in the 'many' side. But, if you have a good reason to want an array of child pointers, you can push() documents onto the array as shown below.
 
+*/
+
+
+/* 
+function seedDB2() {
+
+	return Company.remove({}).exec()
+		.then(companies => {
+
+			return Comment.remove({}).exec();
+		}).then(comments => {
+
+			return Company.create(companiesArray);
+		}).then(createdCompanies => {
+
+			createdCompanies.forEach(company => {
+				Comment.create(commentsArray).then(newComments => {
+					newComments.forEach(newComment => {
+						newComment.company = company._id;
+						newComment.save()
+					});
+				});
+			})
+
+			return 'Companies seeded';
+
+		}).catch(function (err) {
+			console.log("----ERROR in creationPromises: ", err);
+		});
+} 
+
+function seedDB() {
+
+	const removeCompaniesPromise = Company.remove({}).exec();
+
+	const removeCommentsPromise = removeCompaniesPromise.then(companies => {
+		return Comment.remove({}).exec();
+	});
+
+	const companyCreation = removeCommentsPromise.then(comments => {
+		return Company.create(companiesArray);
+	});
+
+	const finalReturn = companyCreation.then(createdCompanies => {
+
+		createdCompanies.forEach(company => {
+			Comment.create(commentsArray).then(newComments => {
+				newComments.forEach(newComment => {
+					newComment.company = company._id;
+					newComment.save()
+				});
+			});
+		})
+
+		return 'Companies seeded';
+
+	}).catch(function (err) {
+		console.log("----ERROR in creationPromises: ", err);
+	});
+
+	return finalReturn;//a promise
+}
 */
